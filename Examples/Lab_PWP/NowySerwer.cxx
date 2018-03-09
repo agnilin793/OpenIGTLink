@@ -177,7 +177,7 @@ int main(int argc, char* argv[])
   //------------------------------------------------------------
   // Close connection (The example code never reaches to this section ...)
   
-  socket->CloseSocket();
+  //socket->CloseSocket();
 
 }
 
@@ -377,6 +377,30 @@ int ReceivePoint(igtl::Socket * socket, igtl::MessageHeader * header)
       std::cerr << " Radius    : " << std::fixed << pointElement->GetRadius() << std::endl;
       std::cerr << " Owner     : " << pointElement->GetOwner() << std::endl;
       std::cerr << "================================" << std::endl;
+
+
+	   igtl::PointMessage::Pointer pointMsg;
+  pointMsg = igtl::PointMessage::New();
+  pointMsg->SetDeviceName("PointSender");
+
+  //---------------------------
+  // Create 1st point
+  igtl::PointElement::Pointer point0;
+  point0 = igtl::PointElement::New();
+  point0->SetName(pointElement->GetName());
+  point0->SetGroupName(pointElement->GetGroupName());
+  point0->SetRGBA((int)rgba[0], (int)rgba[1], (int)rgba[2], (int)rgba[3]);
+  point0->SetPosition(-pos[0], -pos[1], -pos[2]);
+  point0->SetRadius(pointElement->GetRadius());
+  point0->SetOwner(pointElement->GetOwner());
+
+   pointMsg->AddPointElement(point0);
+  pointMsg->Pack();
+  
+  //------------------------------------------------------------
+  // Send
+  socket->Send(pointMsg->GetPackPointer(), pointMsg->GetPackSize());
+
       }
     }
 
