@@ -21,6 +21,7 @@ if (${OpenIGTLink_PROTOCOL_VERSION} GREATER 1)
     ImageDatabaseServer
     String
     Bind
+    Lab_PWP
     PolyData
     Capability
     Trajectory
